@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演習用テキスト | 薬剤師×AI お試し講座</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    background: #f7f7f5;
+    color: #1a1a1a;
+    line-height: 1.7;
+  }
+  main { max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 8px 0 4px; }
+  .lead { font-size: 14px; color: #555; margin: 0 0 20px; }
+  section.card {
+    background: #fff;
+    border: 1px solid #e2e2de;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  h2 { font-size: 17px; margin: 0 0 8px; }
+  .how { font-size: 14px; color: #444; margin: 0 0 12px; }
+  .text-box {
+    background: #fafaf8;
+    border: 1px solid #e8e8e4;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0 0 12px;
+  }
+  button.copy {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: #2563eb;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button.copy:active { background: #1d4ed8; }
+  button.copy.done { background: #15803d; }
+  .note { font-size: 13px; color: #666; margin: 10px 0 0; }
+  footer { font-size: 12px; color: #888; text-align: center; margin: 24px 0 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>演習用テキスト</h1>
+  <p class="lead">「コピーする」ボタンを押すと、AIへのお願い文ごとコピーできます。コピーしたら ChatGPT に貼り付けてください。</p>
+
+  <section class="card">
+    <h2>演習1：下調べと要約</h2>
+    <p class="how">下の製品情報文を、AIに「3行で要約して」と頼んでみてください。そのあと原文と見比べて、合っている点・違う点を探します。</p>
+    <p class="text-box" id="text1">次の製品情報文を、3行で要約してください。
+
+「セイヨウ錠5mg」（架空の薬品名）は、1日1回1錠を夕食後に服用する。主な副作用として、眠気（約3%）と口の渇き（約1%）が報告されている。自動車の運転など危険を伴う作業を行う場合は注意すること。高齢者では少量から開始することが望ましい。なお、本剤はグレープフルーツジュースと同時に服用しないこと。</p>
+    <button class="copy" data-target="text1">演習1のテキストをコピーする</button>
+    <p class="note">※ この製品情報は、演習用に作った架空のものです。</p>
+  </section>
+
+  <section class="card">
+    <h2>演習2：文章の下書き</h2>
+    <p class="how">下の箇条書き3点を材料に、AIに「患者さん向けのお知らせ文にして」と頼んでみてください。できあがった文章を読み、「このまま出せるか／直したいところはどこか」を確認します。</p>
+    <p class="text-box" id="text2">次の箇条書きをもとに、患者さん向けのお知らせ文を作ってください。
+
+・年末年始の休業：12月30日〜1月3日
+・12月29日は午前中のみ受付
+・お薬が不足しないよう、早めの受診をお願いしたい</p>
+    <button class="copy" data-target="text2">演習2のテキストをコピーする</button>
+    <p class="note">※ このお知らせの内容は、演習用に作った架空のものです。</p>
+  </section>
+
+  <footer>薬剤師×AI お試し講座 演習用ページ（掲載内容はすべて架空の演習用データです）</footer>
+</main>
+
+<script>
+  document.querySelectorAll('button.copy').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      var text = document.getElementById(btn.dataset.target).innerText;
+      var original = btn.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      btn.textContent = 'コピーしました ✓ ChatGPTに貼ってください';
+      btn.classList.add('done');
+      setTimeout(function () {
+        btn.textContent = original;
+        btn.classList.remove('done');
+      }, 3000);
+    });
+  });
+</script>
+</body>
+</html>
